@@ -1,0 +1,24 @@
+.places h1{
+    font-size: 30px;
+}
+article{
+    width: 390px;
+    padding: 20px;
+    margin: 20px;
+    border :1px solid #FF5A5F;
+    border-radius: 4px;
+    float:left;
+    
+}
+article h2{
+    font-size: 30px;
+    text-align: center;
+    line-height: 1px; 
+    margin-bottom: 15px;
+
+}
+article:nth-last-child(1){
+    float: none;
+    margin: 0 auto; 
+    clear: both;
+}
