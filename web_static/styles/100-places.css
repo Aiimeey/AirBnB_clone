@@ -77,8 +77,53 @@ article:nth-last-child(1){
 
 }
 article:nth-child(2){
-    padding-bottom:105px;
+    padding-bottom:10px;
 }
 .user{
     margin: 25px
+}
+
+.Amenities,
+.Reviews{
+    margin-top :40px;
+    
+}
+
+.Amenities h2,
+.Reviews h2{
+font-size: 20px;
+border-bottom: 1px solid #DDDDDD;
+padding-bottom: 20px;
+}
+ul h3{
+    font-size: 14px;
+}
+ul p {
+    font-size: 12px;
+}
+li {
+    list-style: none;
+}
+.TV {
+    background-image: url('../images/icon_tv.png');
+    background-repeat: no-repeat;
+    height: 45px;
+}
+
+.WIFI{
+    background-image: url('../images/icon_wifi.png');
+    background-repeat: no-repeat;
+    height: 45px;
+}
+
+.Pets{
+    background-image: url('../images/icon_pets.png');
+    background-repeat: no-repeat;
+    height: 45px;
+
+}
+
+span{
+    margin-left: 70px;
+    line-height: 60px;
 }
