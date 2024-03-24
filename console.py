@@ -32,32 +32,35 @@ class HBNBCommand(cmd.Cmd):
         if line == f"{clss.__name__}.count()":
             return self.do_count(f"{clss.__name__}")
 
-
-
-        match_show_destroy = re.match(rf'^({re.escape(clss_)})\.(show|destroy)\("([a-z\d-]+)"\)$', line)
-        match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
-        match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",\s*(.*)\)$', line)
+        match_show_destroy = re.match(rf'^({re.escape(clss_)})\.(show|destroy)'
+                                      rf'\("([a-z\d-]+)"\)$', line)
+        match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",'
+                         rf'\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
+        match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)'
+                                rf'",\s*(.*)\)$', line)
 
         if match_show_destroy:
             Id = line.split('"')[1]
             cmd = match_show_destroy.group(2)
-            for key , value in storage.all().items():
-                if Id in f"{value}" :
+            for key, value in storage.all().items():
+                if Id in f"{value}":
                     if cmd == "show":
                         return self.do_show(f"{clss_} {Id}")
                     elif cmd == "destroy":
                         return self.do_destroy(f"{clss_} {Id}")
 
         elif match:
-            return self.do_update(f"{clss.__name__} {match.group(2)} {match.group(3)} {match.group(4)}")
-        elif  match_update:            
+            return self.do_update(f"{clss.__name__} {match.group(2)} "
+                                  f"{match.group(3)} {match.group(4)}")
+        elif match_update:
             x = json.loads(match_update.group(3).replace("'", '"'))
             first_key, first_value = list(x.items())[0]
             second_key, second_value = list(x.items())[1]
-            return self.do_update(f"{clss.__name__} {match_update.group(2)} {first_key} {first_value} {second_key} {second_value}")
-            
+            return self.do_update(f"{clss.__name__} {match_update.group(2)} "
+                                  f"{first_key} {first_value} {second_key} "
+                                  f"{second_value}")
 
-        else :
+        else:
             print("** no instance found **")
 
     def do_count(self, line):
@@ -201,14 +204,15 @@ class HBNBCommand(cmd.Cmd):
         if len(line.split()) > 4:
             attribute_name = line.split()[4]
 
-            if line.split()[4] and not line.split()[5]:
+            if not line.split()[5]:
                 print("** value missing **")
                 return
             else:
                 attribute_value = line.split()[5]
 
                 if (attribute_name != "created_at" and
-                        attribute_name != "updated_at" and attribute_name != "id"):
+                        attribute_name != "updated_at" and
+                        attribute_name != "id"):
 
                     value = self.check(attribute_value)
                     setattr(data, attribute_name, value)
