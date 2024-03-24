@@ -54,11 +54,8 @@ class HBNBCommand(cmd.Cmd):
                                   f"{match.group(3)} {match.group(4)}")
         elif match_update:
             x = json.loads(match_update.group(3).replace("'", '"'))
-            try:
             first_key, first_value = list(x.items())[0]
-            if second_key, second_value = list(x.items())[1]
-            except IndexError:
-                return
+            second_key, second_value = list(x.items())[1]
             return self.do_update(f"{clss.__name__} {match_update.group(2)} "
                                   f"{first_key} {first_value} {second_key} "
                                   f"{second_value}")
