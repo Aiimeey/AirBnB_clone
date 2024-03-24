@@ -37,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
         match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",'
                          rf'\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
         match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)'
-                                rf'",\s*(.*)\)$', line)
+                                rf'",\s*(.*):\s*(.*),\s*(.*):\s*(.*)\)$', line)
 
         if match_show_destroy:
             Id = line.split('"')[1]
