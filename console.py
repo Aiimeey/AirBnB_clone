@@ -9,6 +9,8 @@ from models.amenity import Amenity
 from models.review import Review
 from models.place import Place
 from models import storage
+import re
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -17,18 +19,46 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Handle default commands."""
-        clss = line.split(".")[0]
+        clss_ = line.split(".")[0]
         try:
-            clss = globals()[clss]
+            clss = globals()[clss_]
         except KeyError:
             print("** class doesn't exist **")
             return
 
         if line == f"{clss.__name__}.all()":
-            self.do_all(f"{clss.__name__}")
+            return self.do_all(f"{clss.__name__}")
 
         if line == f"{clss.__name__}.count()":
-            self.do_count(f"{clss.__name__}")
+            return self.do_count(f"{clss.__name__}")
+
+
+
+        match_show_destroy = re.match(rf'^({re.escape(clss_)})\.(show|destroy)\("([a-z\d-]+)"\)$', line)
+        match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
+        match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",\s*(.*)\)$', line)
+
+        if match_show_destroy:
+            Id = line.split('"')[1]
+            cmd = match_show_destroy.group(2)
+            for key , value in storage.all().items():
+                if Id in f"{value}" :
+                    if cmd == "show":
+                        return self.do_show(f"{clss_} {Id}")
+                    elif cmd == "destroy":
+                        return self.do_destroy(f"{clss_} {Id}")
+
+        elif match:
+            return self.do_update(f"{clss.__name__} {match.group(2)} {match.group(3)} {match.group(4)}")
+        elif  match_update:            
+            x = json.loads(match_update.group(3).replace("'", '"'))
+            first_key, first_value = list(x.items())[0]
+            second_key, second_value = list(x.items())[1]
+            return self.do_update(f"{clss.__name__} {match_update.group(2)} {first_key} {first_value} {second_key} {second_value}")
+            
+
+        else :
+            print("** no instance found **")
 
     def do_count(self, line):
         """Count the number of instances of a class"""
@@ -159,6 +189,25 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             attribute_value = line.split()[3]
+
+        if (attribute_name != "created_at" and
+                attribute_name != "updated_at" and attribute_name != "id"):
+
+            value = self.check(attribute_value)
+            setattr(data, attribute_name, value)
+
+            storage.save()
+
+        if len(line.split()) > 4:
+            print(line.split()[4])
+            attribute_name = line.split()[4]
+
+        if len(line.split()) == 6 and not line.split()[5]:
+            print("** value missing **")
+            return
+        else:
+            print(line.split()[5])
+            attribute_value = line.split()[5]
 
         if (attribute_name != "created_at" and
                 attribute_name != "updated_at" and attribute_name != "id"):
