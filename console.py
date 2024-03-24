@@ -199,23 +199,21 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
         if len(line.split()) > 4:
-            print(line.split()[4])
             attribute_name = line.split()[4]
 
-        if len(line.split()) == 6 and not line.split()[5]:
-            print("** value missing **")
-            return
-        else:
-            print(line.split()[5])
-            attribute_value = line.split()[5]
+            if line.split()[4] and not line.split()[5]:
+                print("** value missing **")
+                return
+            else:
+                attribute_value = line.split()[5]
 
-        if (attribute_name != "created_at" and
-                attribute_name != "updated_at" and attribute_name != "id"):
+                if (attribute_name != "created_at" and
+                        attribute_name != "updated_at" and attribute_name != "id"):
 
-            value = self.check(attribute_value)
-            setattr(data, attribute_name, value)
+                    value = self.check(attribute_value)
+                    setattr(data, attribute_name, value)
 
-            storage.save()
+                    storage.save()
 
     def check(self, value):
         """method that check type of the value """
