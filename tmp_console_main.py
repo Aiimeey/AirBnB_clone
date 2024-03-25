@@ -37,9 +37,7 @@ class HBNBCommand(cmd.Cmd):
         match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",'
                          rf'\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
         match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)'
-        rf'",\s*.[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?,'
-        rf'\s*[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?.\)$',\
-        line)
+                                rf'",\s*(.*):\s*(.*),\s*(.*):\s*(.*)\)$', line)
 
         if match_show_destroy:
             Id = line.split('"')[1]
@@ -55,11 +53,12 @@ class HBNBCommand(cmd.Cmd):
             return self.do_update(f"{clss.__name__} {match.group(2)} "
                                   f"{match.group(3)} {match.group(4)}")
         elif match_update:
+            x = json.loads(match_update.group(3).replace("'", '"'))
+            first_key, first_value = list(x.items())[0]
+            second_key, second_value = list(x.items())[1]
             return self.do_update(f"{clss.__name__} {match_update.group(2)} "
-                                  f"{match_update.group(3)} "
-                                  f"{match_update.group(4)} "
-                                  f"{match_update.group(5)} "
-                                  f"{match_update.group(6)}")
+                                  f"{first_key} {first_value} {second_key} "
+                                  f"{second_value}")
 
         else:
             print("** no instance found **")
