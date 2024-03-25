@@ -10,7 +10,6 @@ from models.review import Review
 from models.place import Place
 from models import storage
 import re
-import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -37,9 +36,10 @@ class HBNBCommand(cmd.Cmd):
         match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",'
                          rf'\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
         match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)'
-        rf'",\s*.[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?,'
-        rf'\s*[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?.\)$',\
-        line)
+                                rf'",\s*.[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?'
+                                rf'([a-zA-Z_\d]+)[\'\"]?,\s*[\'\"]([a-zA-Z_]+)'
+                                rf'[\'\"]:\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?.\)'
+                                rf'$', line)
 
         if match_show_destroy:
             Id = line.split('"')[1]
