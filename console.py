@@ -66,8 +66,6 @@ class HBNBCommand(cmd.Cmd):
                                   f"{match_update.group(5)} "
                                   f"{match_update.group(6)}")
 
-
-
     def do_count(self, line):
         """Count the number of instances of a class"""
 
