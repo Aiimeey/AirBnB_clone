@@ -44,12 +44,17 @@ class HBNBCommand(cmd.Cmd):
         if match_show_destroy:
             Id = line.split('"')[1]
             cmd = match_show_destroy.group(2)
+            instance_found = False
             for key, value in storage.all().items():
                 if Id in f"{value}":
+                    instance_found = True
                     if cmd == "show":
                         return self.do_show(f"{clss_} {Id}")
                     elif cmd == "destroy":
                         return self.do_destroy(f"{clss_} {Id}")
+            if not instance_found:
+                print("** no instance found **")
+                return
 
         elif match:
             return self.do_update(f"{clss.__name__} {match.group(2)} "
@@ -61,8 +66,7 @@ class HBNBCommand(cmd.Cmd):
                                   f"{match_update.group(5)} "
                                   f"{match_update.group(6)}")
 
-        else:
-            print("** no instance found **")
+
 
     def do_count(self, line):
         """Count the number of instances of a class"""
