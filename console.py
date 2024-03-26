@@ -32,9 +32,9 @@ class HBNBCommand(cmd.Cmd):
             return self.do_count(f"{clss.__name__}")
 
         match_show_destroy = re.match(rf'^({re.escape(clss_)})\.(show|destroy)'
-                                      rf'\("([a-z\d-]+)"\)$', line)
+                                      rf'\("([a-zA-Z\d-]+)"\)$', line)
         match = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)",'
-                         rf'\s*"([a-zA-Z_]+)",\s*"([a-zA-Z_]+)"\)$', line)
+                         rf'\s*"([a-zA-Z_]+)",\s*[\'\"]?([a-zA-Z_\d]+)[\'\"]?\)$', line)
         match_update = re.match(rf'^({re.escape(clss_)})\.update\("([a-z\d-]+)'
                                 rf'",\s*.[\'\"]([a-zA-Z_]+)[\'\"]:\s*[\'\"]?'
                                 rf'([a-zA-Z_\d]+)[\'\"]?,\s*[\'\"]([a-zA-Z_]+)'
@@ -59,7 +59,13 @@ class HBNBCommand(cmd.Cmd):
         elif match:
             return self.do_update(f"{clss.__name__} {match.group(2)} "
                                   f"{match.group(3)} {match.group(4)}")
+
         elif match_update:
+            print((f"{clss.__name__} {match_update.group(2)} "
+                                  f"{match_update.group(3)} "
+                                  f"{match_update.group(4)} "
+                                  f"{match_update.group(5)} "
+                                  f"{match_update.group(6)}"))
             return self.do_update(f"{clss.__name__} {match_update.group(2)} "
                                   f"{match_update.group(3)} "
                                   f"{match_update.group(4)} "
